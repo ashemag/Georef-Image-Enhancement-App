@@ -11,7 +11,7 @@ Ashe Magalhaes
 * Focus on making app compatible with existing Django framework 
 
 ## Issues ## 
-Save feature 
+### Save feature ### 
   * Problem with saving CSS changes from brightness/contrast sliders 
   * Explored making image SVG; issue with changing SVG source to new image produced by autoenhance function 
   
