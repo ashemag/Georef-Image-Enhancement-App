@@ -1,0 +1,125 @@
+{% load static %}
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html>
+	<head> 
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+		<link rel="stylesheet" type="text/css" href="{% static 'autoenhance/style.css' %}" />
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script> 
+		<script type='text/javascript' src='http://code.jquery.com/jquery-1.8.2.js'></script>
+		<script type="text/javascript" src="{% static 'autoenhance/html2canvas-master/dist/html2canvas.js' %}"></script>
+		<script type="text/javascript" src="{% static 'autoenhance/CamanJS-4.1.1/dist/caman.full.min.js' %}"></script>
+		<script type="text/javascript" src="{% static 'autoenhance/saveSvgAsPng-gh-pages/saveSvgAsPng.js' %}"></script>
+		<script src="http://d3js.org/d3.v2.js"></script>
+		</script>
+	</head>
+	<body>
+		<div id="wrapper"> 
+			<div id="image_wrap">
+				<img 
+					id="image"
+					src = "{{ data.image.url }}"
+					width="30%"
+					height="30%"
+				/>
+			</div> 
+			<div id="sliders">
+				<div id = "slider"><label>Brightness</label></div> 
+				<div id="slider"> 
+					<input 
+						id="brightness"
+						type="range" 
+						min="0" 
+						value="100"
+						max="200" 
+						step=any/> 
+				</div> 
+	  		<div id="slider"> 
+					<div id = "slider"><label>Contrast</label></div> 
+					<input 
+						id="contrast"
+						type="range" 
+						min="0" 
+						value="100"
+						max="200" 
+						step=any/>
+				</div> 
+				<div id="slider"> <button type="button" id="autoenhance_btn">Autoenhance</button> </div>
+				<div id="slider"> <button type="button" id="reset_btn">Reset</button> </div> 				
+			</div> 
+		</div> 
+
+		<script>
+			//Sliders  
+			$("input").on("input", function() {
+				var contrast = $("#contrast").val();
+				var brightness = $("#brightness").val(); 
+
+				$("#image").css({
+					 "-webkit-filter": "contrast(" + contrast + "%)" + "brightness(" + brightness + "%)"
+				}); 
+			}); 
+
+			//Autoenhance button 
+ 			$(document).ready(function() {
+        $("#autoenhance_btn").click(function() {
+        	var image = document.getElementById("image"); 
+        	var button = document.getElementById("autoenhance_btn");
+					$.ajax({
+	          url : "", 
+	          type : "POST",
+	          dataType: "json", 
+	          data : {
+	          	undo: false,  
+	          	save: false, 
+	          	csrfmiddlewaretoken: '{{ csrf_token }}'
+          	},
+          	success : function(response) {
+          		console.log("Success!"); 
+          		image.onload = function() {
+          			button.blur() 
+          		} 
+          		image.src= response['data'];
+          	}
+        	});
+      	});
+    	});
+			//Reset button 
+			$(document).ready(function() {
+				
+        $("#reset_btn").click(function() {
+        	console.log("reset_btn clicked!")
+        	var image = document.getElementById("image"); 
+					var button = document.getElementById("reset_btn"); 
+					image.onload = function() { 
+        			button.blur() 
+        	}
+
+        	//reset sliders 
+        	document.getElementById("brightness").value = 100;
+        	document.getElementById("contrast").value = 100;
+        	$("#image").css({
+					 "-webkit-filter": "contrast(" + 100 + "%)" + "brightness(" + 100 + "%)"
+					}); 
+
+        	//Request to python script to copy original.jpg into image.jpg 
+        	$.ajax({
+	          url : "", 
+	          type : "POST",
+	          dataType: "json", 
+	          data : {
+	          	undo: true, 
+	          	save: false,  
+	          	csrfmiddlewaretoken: '{{ csrf_token }}'
+          	},
+          	success : function(response) {
+          		console.log("Success!"); 
+          		image.src = response['data']
+          	}
+        	});
+        }); 
+      }); 
+		</script> 
+	</body>
+</html> 
