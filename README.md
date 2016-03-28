@@ -12,8 +12,9 @@ Ashe Magalhaes
 
 ## Issues  
 Save feature 
-  * Problem with saving CSS changes from brightness/contrast sliders 
-  * Explored making image SVG; issue with changing SVG source to new image produced by autoenhance function 
+  * For quick brightness/slider feature, app relies on CSS changes generated from 'webkitz' function 
+  * Issue with rendering CSS changes on images and saving 
+  * Potential fix: Making image a SVG; issue with changing SVG source to 'autoenhanced' image 
   
 <p align="center">
   <img src="app.jpg" width="350"/>
