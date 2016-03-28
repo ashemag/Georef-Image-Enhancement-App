@@ -17,5 +17,5 @@ Save feature
   * Potential fix: Making image a SVG; issue with changing SVG source to 'autoenhanced' image 
   
 <p align="center">
-  <img src="app.jpg" width="700"/>
+  <img src="app.jpg" width="500"/>
 </p>
