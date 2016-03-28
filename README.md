@@ -1,4 +1,4 @@
-# Georef-Autoenhance-App
+# Georef Image Enhancement Application 
 ## Author 
 Ashe Magalhaes 
 * Internship, NASA Ames 
