@@ -15,3 +15,6 @@ Save feature
   * Problem with saving CSS changes from brightness/contrast sliders 
   * Explored making image SVG; issue with changing SVG source to new image produced by autoenhance function 
   
+<p align="center">
+  <img src="image.jpg" width="350"/>
+</p>
