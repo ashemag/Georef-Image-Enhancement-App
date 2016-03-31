@@ -15,7 +15,7 @@ Ashe Magalhaes
 
 ## Issues  
 Save button  
-  * Button does not blur after ajax function  
+ * Button does not blur after ajax function  
   
 <p align="center">
   <img src="app.jpg" width="500"/>
