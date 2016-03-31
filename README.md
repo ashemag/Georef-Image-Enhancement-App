@@ -10,11 +10,12 @@ Ashe Magalhaes
 * Features include brightness and contrast sliders as well as histogram stretching autonenhance function 
 * Focus on making app compatible with existing Django framework 
 
+## Libraries 
+* urllib, os, PIL, requests, StringIO, django 
+
 ## Issues  
-Save feature 
-  * For quick brightness/slider feature, app relies on CSS changes generated from 'webkitz' function 
-  * Issue with rendering CSS changes on images and saving 
-  * Potential fix: Making image a SVG; issue with changing SVG source to 'autoenhanced' image 
+Save button  
+  * Button does not blur after ajax function  
   
 <p align="center">
   <img src="app.jpg" width="500"/>
