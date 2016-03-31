@@ -6,10 +6,10 @@ import urllib
 import operator 
 import os 
 ####################################
+from .models import Layout
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import loader
-from .models import Layout
 from django_ajax.decorators import ajax
 from django.conf import settings 
 from django.core.files import File
@@ -37,10 +37,16 @@ def index(request):
             import json
         except ImportError:
             import simplejson
-        print "Ajax"
 
         layout = Layout.objects.get(name=IMAGE_NAME)
-
+        
+        #if slider values have changed, save new values to model 
+        if request.POST.get('slider_vals') == "true": 
+            layout.brightness = request.POST.get('a_brightness')
+            layout.contrast = request.POST.get('a_contrast')
+            layout.autoenhance = request.POST.get('a_autoenhance')
+        
+        # save original image to model 
         if request.POST.get('undo') == "true": 
             layout.image = layout.original_image 
             layout.save() 
@@ -50,14 +56,13 @@ def index(request):
             }
             return HttpResponse(json.dumps(response_data))        
         else: 
+            #save autoenhanced image to model 
             img = Image.open(layout.image)
             processedImage = autoenhance(img)
-            print "Trying to save"
-            print layout.image.url 
             processedImage.save("django_images/image.jpg")
             layout.image.save(os.path.basename("image.jpg"), File(open("django_images/image.jpg")))
             layout.save() 
-            print layout.image.url 
+
             response_data = {}
             response_data['message'] = "success" 
             response_data['data'] = layout.image.url 
@@ -82,7 +87,7 @@ def index(request):
           'data' : layout, 
         }
 
-    template = loader.get_template('autoenhance/index.html')
+    template = loader.get_template("autoenhance/index.html")
     return HttpResponse(template.render(context, request))
 
 

@@ -8,7 +8,6 @@
 		<link rel="stylesheet" type="text/css" href="{% static 'autoenhance/style.css' %}" />
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script> 
 		<script type='text/javascript' src='http://code.jquery.com/jquery-1.8.2.js'></script>
-		<script type="text/javascript" src="{% static 'autoenhance/saveSvgAsPng-gh-pages/saveSvgAsPng.js' %}"></script>
 		<script src="http://d3js.org/d3.v2.js"></script>
 		</script>
 	</head>
@@ -44,11 +43,14 @@
 						step=any/>
 				</div> 
 				<div id="slider"> <button type="button" id="autoenhance_btn">Autoenhance</button> </div>
-				<div id="slider"> <button type="button" id="reset_btn">Reset</button> </div> 				
+				<div id="slider"> <button type="button" id="reset_btn">Reset</button> </div>
+				<div id="save"> <button type="button" id="save">Save Changes</button></div>  				
 			</div> 
 		</div> 
 
 		<script>
+			var autoenhance = false; 
+
 			//Sliders  
 			$("input").on("input", function() {
 				var contrast = $("#contrast").val();
@@ -57,11 +59,38 @@
 				$("#image").css({
 					 "-webkit-filter": "contrast(" + contrast + "%)" + "brightness(" + brightness + "%)"
 				}); 
-			}); 
+			});
+
+			//Send new values to views to save to model 
+			$(document).ready(function() {
+				$("#save").click(function() {
+					var contrast = $("#contrast").val();
+					var brightness = $("#brightness").val(); 
+
+					$.ajax({
+	          url : "", 
+	          type : "POST",
+	          dataType: "json", 
+	          data : {
+	          	undo: false,
+	          	slider_vals: true, 
+	          	a_autoenhance: autoenhance, 
+	          	a_brightness: brightness, 
+	          	a_contrast: contrast,   
+	          	csrfmiddlewaretoken: '{{ csrf_token }}'
+          	},
+          	success : function(response) {
+          		console.log("Success!"); 
+          	}
+        	});
+        	document.getElementById("save").blur();
+				});
+			});
 
 			//Autoenhance button 
  			$(document).ready(function() {
         $("#autoenhance_btn").click(function() {
+        	autoenhance = true;  
         	var image = document.getElementById("image"); 
         	var button = document.getElementById("autoenhance_btn");
 					$.ajax({
@@ -70,7 +99,7 @@
 	          dataType: "json", 
 	          data : {
 	          	undo: false,  
-	          	save: false, 
+	          	slider_vals: false, 
 	          	csrfmiddlewaretoken: '{{ csrf_token }}'
           	},
           	success : function(response) {
@@ -78,16 +107,16 @@
           		image.onload = function() {
           			button.blur() 
           		} 
-          		image.src= response['data'];
+          		image.src= response['data'];          		
           	}
         	});
       	});
     	});
+
 			//Reset button 
 			$(document).ready(function() {
-				
         $("#reset_btn").click(function() {
-        	console.log("reset_btn clicked!")
+        	autoenhance = false; 
         	var image = document.getElementById("image"); 
 					var button = document.getElementById("reset_btn"); 
 					image.onload = function() { 
@@ -107,8 +136,8 @@
 	          type : "POST",
 	          dataType: "json", 
 	          data : {
-	          	undo: true, 
-	          	save: false,  
+	          	undo: true,
+	          	slider_vals: false,  
 	          	csrfmiddlewaretoken: '{{ csrf_token }}'
           	},
           	success : function(response) {
