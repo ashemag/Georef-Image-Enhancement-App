@@ -14,8 +14,7 @@ Ashe Magalhaes
 * urllib, os, PIL, requests, StringIO, django 
 
 ## Issues  
-Save button  
- * Button does not blur after ajax function  
+Save Changes button does not blur after ajax function finishes 
   
 <p align="center">
   <img src="app.jpg" width="500"/>
