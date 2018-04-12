@@ -1,17 +1,6 @@
-# Georef Image Enhancement Application 
-## Author 
-Ashe Magalhaes 
-* Internship, NASA Ames 
-* Fall 2015 - Spring 2016 
-
-## Description 
+# Georef Image Enhancement Application - NASA AMES 
 * Feature for Georef software, developed by Geocam Space group 
-* Allows clients to enhance the imagery being geolocated
-* Features include brightness and contrast sliders as well as histogram stretching autonenhance function 
-* Focus on making app compatible with existing Django framework 
-
-## Libraries 
-* urllib, os, PIL, requests, StringIO, django 
+* Component of larger tool to geolocate and enhance imagery taken by astronauts onboard the ISS 
 
 <p align="center">
   <img src="app.jpg" width="500"/>
